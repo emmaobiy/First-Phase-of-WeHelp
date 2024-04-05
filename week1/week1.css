@@ -1,5 +1,7 @@
 body {
     font-size: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .top-frame {
@@ -38,10 +40,11 @@ body {
     background:rgb(207, 227, 255);
     width: 100%;
     height:250px;
-
+    
     display:flex;
     justify-content:center;	
 	align-items:center;
+    text-align: center;
 
     font-size: 2em;
     font-weight: bold;
@@ -142,8 +145,7 @@ body {
  }
 
 
-@media (min-width: 361px) and (max-width: 600px){
-
+@media (max-width: 600px){
     .grid {
         width: 90%; 
         max-width: 90%; 
@@ -185,4 +187,13 @@ body {
     .item{
         margin-bottom: 40px; 
         text-align: center;
- }
+    }
+}
+
+@media (max-width: 230px){
+    
+    body {
+        font-size: 12px;
+    }
+
+}
