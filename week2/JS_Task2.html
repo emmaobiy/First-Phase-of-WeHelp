@@ -5,45 +5,84 @@
     </head>
     <body>
         <script>
-
-        const bookingRecords = {};
+        let bookedrecord = [];
 
         function book(consultants, hour, duration, criteria) {
+            const availableconsultants = ["Jenny", "John", "Bob"];
+                        
+            for (let i = 0; i < bookedrecord.length; i++) {
+                // 檢查是否時間有重疊
+                const booked = bookedrecord[i]; 
+                
+                // 如果時間有重疊
+                if (hour < booked.end && hour + duration > booked.start) {
+                    
+                    //從在availableconsultants中找(重複時間對應的booked.consultant)
+                    const index = availableconsultants.indexOf(booked.consultant);
 
-            const availableConsultants = consultants.filter(consultant => {
-                const bookings = bookingRecords[consultant.name] || [];
-
-                for (const booking of bookings) {
-                    if (hour < booking.hour + booking.duration && hour + duration > booking.hour) {
-                        return false; 
+                    //如果找到了(找不到的時候會回傳-1，所以!==-1就是找到了)
+                    if (index !== -1) {
+                        availableconsultants.splice(index, 1);
                     }
                 }
-                return true;
-            });
-
-
-            if (availableConsultants.length === 0) {
-                console.log("No Service");
-                return;
             }
 
-            availableConsultants.sort((a, b) => {
-                if (criteria === "price") {
-                    return a.price - b.price;
-                } else if (criteria === "rate") {
-                    return b.rate - a.rate;
-                }
+            if (availableconsultants.length === 0) {
+                console.log("No Service");
+                return; // 如果沒有可用顧問，直接返回
+            }
+
+            let theconsultant;
+
+            // 根據標準選擇顧問
+            if (criteria === "price") {
+
+                //使用map創建一個調整後的availableconsultants，陣列中每個元素為consultant
+                const consultantprice = availableconsultants.map(consultant => {
+                    
+                    /*使用find尋找consultants陣列中的每個元素(物件)=c，當consultants.name中等於consultant的name，
+                    就是找到了那個元素(物件)然後回傳元素(物件)，元素(物件)=foundConsultant，我要指定裡面的price*/
+                    const foundConsultant = consultants.find(c => c.name === consultant);
+                    return foundConsultant.price;                   
+                });
+
+                // 使用 sort 方法根據價格對可用顧問進行排序
+                availableconsultants.sort((a, b) => {
+                    const priceA = consultantprice[availableconsultants.indexOf(a)];
+                    const priceB = consultantprice[availableconsultants.indexOf(b)];
+                    return priceA - priceB;// 排序從低到高
+                });
+
+
+            } else if (criteria === "rate") {
+                const consultantrate = availableconsultants.map(consultant => {
+                    const foundConsultant = consultants.find(c => c.name === consultant);
+                    return foundConsultant.rate;
+                });
+
+                
+                availableconsultants.sort((a, b) => {
+                    const rateA = consultantrate[availableconsultants.indexOf(a)];
+                    const rateB = consultantrate[availableconsultants.indexOf(b)];
+                    return rateB - rateA; // 排序從高到低
+                });
+            }
+
+            console.log( availableconsultants[0]); // 打印選擇的顧問
+
+            // 添加到 bookedrecord 中
+            bookedrecord.push({
+                "consultant": availableconsultants[0],
+                "start": hour,
+                "end": hour + duration
             });
 
-
-            const selectedConsultant = availableConsultants[0];
-
-            const bookings = bookingRecords[selectedConsultant.name] || [];
-            bookings.push({ hour, duration });
-            bookingRecords[selectedConsultant.name] = bookings;
-
-           console.log(selectedConsultant.name);
+        
         }
+
+
+
+
 
         const consultants = [
             { "name": "John", "rate": 4.5, "price": 1000 },
@@ -58,6 +97,9 @@
         book(consultants, 11, 1, "rate"); // Bob
         book(consultants, 11, 2, "rate"); // No Service
         book(consultants, 14, 3, "price"); // John
+
+
+
         </script>
     </body>
 </html>
