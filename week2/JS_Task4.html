@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>    
+
+        <script>
+        function getNumber(index){
+        let numbersequence = [0];
+        let Value = 0;
+    
+    
+        for (let i = 1; i <= index; i++) {
+            let increment = 0;
+            if (i % 3 === 0) {
+                increment = -1;
+            } else { 
+                increment = 4;
+            }
+            Value += increment;
+            numbersequence.push(Value);
+        }
+        console.log(numbersequence[index]);
+        }
+
+        getNumber(1); // print 4
+        getNumber(5); // print 15
+        getNumber(10); // print 25
+        getNumber(30); // print 70
+
+
+        </script>
+    </body>
+</html>

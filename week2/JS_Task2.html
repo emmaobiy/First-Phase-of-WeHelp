@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+
+        const bookingRecords = {};
+
+        function book(consultants, hour, duration, criteria) {
+
+            const availableConsultants = consultants.filter(consultant => {
+                const bookings = bookingRecords[consultant.name] || [];
+
+                for (const booking of bookings) {
+                    if (hour < booking.hour + booking.duration && hour + duration > booking.hour) {
+                        return false; 
+                    }
+                }
+                return true;
+            });
+
+
+            if (availableConsultants.length === 0) {
+                console.log("No Service");
+                return;
+            }
+
+            availableConsultants.sort((a, b) => {
+                if (criteria === "price") {
+                    return a.price - b.price;
+                } else if (criteria === "rate") {
+                    return b.rate - a.rate;
+                }
+            });
+
+
+            const selectedConsultant = availableConsultants[0];
+
+            const bookings = bookingRecords[selectedConsultant.name] || [];
+            bookings.push({ hour, duration });
+            bookingRecords[selectedConsultant.name] = bookings;
+
+           console.log(selectedConsultant.name);
+        }
+
+        const consultants = [
+            { "name": "John", "rate": 4.5, "price": 1000 },
+            { "name": "Bob", "rate": 3, "price": 1200 },
+            { "name": "Jenny", "rate": 3.8, "price": 800 }
+        ];
+
+        book(consultants, 15, 1, "price"); // Jenny
+        book(consultants, 11, 2, "price"); // Jenny
+        book(consultants, 10, 2, "price"); // John
+        book(consultants, 20, 2, "rate"); // John
+        book(consultants, 11, 1, "rate"); // Bob
+        book(consultants, 11, 2, "rate"); // No Service
+        book(consultants, 14, 3, "price"); // John
+        </script>
+    </body>
+</html>
