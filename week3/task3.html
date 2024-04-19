@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">     
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment - Week 3 -task3</title>
+    <link rel="stylesheet" type="text/css"  href="task3.css">
+</head>
+<body>
+    <div class="top-frame">
+        <div class="title">My Website</div>
+        
+        <div class="hamburger-menu" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">          
+            <div class="item">Item1</div>
+            <div class="item">Item2</div>
+            <div class="item">Item3</div>
+            <div class="item">Item4</div>
+            <div class="close-icon" onclick="toggleMenu()">✕</div>
+        </div>      
+    </div>
+
+    <div class="welcome">Welcome to MyHome</div>
+
+    <div class="grid" id="result">
+
+        <div class="small-box" id="small-box-1">
+            <img src=""/>
+            <span></span>
+        </div>
+
+        <div class="small-box" id="small-box-2">
+            <img src=""/>
+            <span></span>
+        </div>
+
+        <div class="small-box" id="small-box-3">
+            <img src=""/>
+            <span></span>
+        </div>
+
+        <div class="big-box big-box-1200" id="big-box-1"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>                     
+        <div class="big-box" id="big-box-2"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box" id="big-box-3"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box" id="big-box-4"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box" id="big-box-5"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box big-box-1200" id="big-box-6"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box" id="big-box-7"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+        <div class="big-box" id="big-box-8"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>                
+        <div class="big-box big-box-600" id="big-box-9"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>                
+        <div class="big-box big-box-600" id="big-box-10"><img src=""/><div class="star">&#9733;</div><div class="text"></div></div>
+
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+
+        function gateData() {
+            fetch("https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1")
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+
+                    for (let i = 0; i < Math.min(13, data.data.results.length); i++) {
+                        let result = data.data.results[i];
+
+                        if (i < 3) {
+                            // 小方塊
+                            let smallBox = document.getElementById("small-box-" + (i + 1));
+                            while (smallBox.firstChild) {
+                                smallBox.removeChild(smallBox.firstChild);
+                            }
+
+                            let image = document.createElement("img");
+                            image.src = result.filelist.match(/https:\/\/[^\s]+?\.(?:jpg|jpeg|png|gif)/gi)[0];
+                            image.alt = result.stitle;
+
+                            let span = document.createElement("span");
+                            span.textContent = result.stitle;
+                            
+                            smallBox.appendChild(image);
+                            smallBox.appendChild(span);
+                        } else {
+                            // 大方塊
+                            let bigBox = document.getElementById("big-box-" + (i - 2));
+                            while (bigBox.firstChild) {
+                                bigBox.removeChild(bigBox.firstChild);
+                            }
+
+                            let image = document.createElement("img");
+                            image.src = result.filelist.match(/https:\/\/[^\s]+?\.(?:jpg|jpeg|png|gif)/gi)[0];
+                            image.alt = result.stitle;
+
+                            let star = document.createElement("div");
+                            star.classList.add("star");
+                            star.innerHTML = "&#9733;";
+
+                            let text = document.createElement("div");
+                            text.classList.add("text");
+                            text.textContent = result.stitle;
+
+                            bigBox.appendChild(image);
+                            bigBox.appendChild(star);
+                            bigBox.appendChild(text);
+                        }
+                    }
+                })
+        }
+
+        gateData(); // 呼叫函式以取得資料並渲染到頁面上
+
+        
+
+    </script>      
+</body>
+</html>
