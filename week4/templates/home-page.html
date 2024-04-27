@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">     
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>歡迎光臨</title>
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    </head>
+    <body>
+        <div class="welcome">歡迎光臨，請輸入帳號密碼</div>
+        <div class="title">登入系統</div>
+        <form action="/signin" method="post" class="center" onsubmit="return validateForm()">
+            <span>帳號</span>
+            <input type="text" name="username" placeholder="請輸入帳號"/><br>
+            <span>密碼</span>
+            <input type="password" name="password" placeholder="請輸入密碼"/><br>
+            <span>同意條款</span>
+            <input type="checkbox" id="checkbox" >
+            <input type="submit" value="登入">
+        </form>
+
+        <script>
+            function validateForm() {
+                var checkbox = document.getElementById("checkbox");
+                if (!checkbox.checked) {
+                    alert("Please check the checkbox first");
+                    return false; 
+                }
+                return true;
+            }
+        </script>
+    </body>
+</html>
