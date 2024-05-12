@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">     
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>歡迎光臨</title>
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    </head>
+    <body>
+        <div class="welcome">歡迎光臨，請註冊登入系統</div>
+        <div class="title">註冊帳號</div>
+        <form action="/signup" method="post" onsubmit="return validateSignupForm()">
+            <span>姓名</span>
+            <input type="text" name="name" id="name"/><br>
+            <span>帳號</span>
+            <input type="text" name="username" id="username"/><br>
+            <span>密碼</span>
+            <input type="password" name="password" id="password"/>
+            <input type="submit" value="註冊">
+        </form>
+        <hr>     
+        <div class="title">登入系統</div>
+        <form action="/signin" method="post" onsubmit="return validateSigninForm()">
+            <span>帳號</span>
+            <input type="text" name="username" id="username"/><br>
+            <span>密碼</span>
+            <input type="password" name="password" id="password"/><br>
+            <input type="submit" value="登入">
+        </form>
+        <script>
+         function validateSignupForm() {
+            var name = document.getElementsByName("name")[0].value;
+            var username = document.getElementsByName("username")[0].value;
+            var password = document.getElementsByName("password")[0].value;
+            var errorMessage = "";
+
+            if (name === "") {
+                errorMessage += "請輸入姓名\n";
+            }
+            if (username === "") {
+                errorMessage += "請輸入帳號\n";
+            }
+            if (password === "") {
+                errorMessage += "請輸入密碼\n";
+            }
+            if (errorMessage !== "") {
+                alert(errorMessage);
+                return false;
+            }
+            return true;
+            }
+
+        function validateSigninForm() {
+            var username = document.getElementsByName("username")[1].value;
+            var password = document.getElementsByName("password")[1].value;
+            var errorMessage = "";
+            if (username === "") {
+                errorMessage += "請輸入帳號\n";
+            }
+            if (password === "") {
+                errorMessage += "請輸入密碼\n";
+            }
+            if (errorMessage !== "") {
+                alert(errorMessage);
+                return false;
+            }
+            return true;
+            }
+
+
+            // 檢查URL中是否有訊息參數
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            
+            // 如果有訊息，就彈出提示
+            if (message) {
+                alert(message);
+            }
+        </script>
+    </body>
+</html>

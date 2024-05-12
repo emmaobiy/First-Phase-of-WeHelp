@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">     
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>歡迎光臨</title>
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    </head>
+
+    <body>
+        <div class="welcome">歡迎光臨，這是會員頁</div>
+        <div class="title">{{ name }}，歡迎登入系統</div>
+        <div>
+            <a href="/signout" class="title">登出系統</a>
+        </div>
+
+        <hr>   
+        
+        <div >
+
+            <div class="title">留言版</div> 
+            <div>
+                <form action="/createMessage" method="post" onsubmit="return validateMessageForm()">
+                    <textarea name="content" id="content" rows="4" cols="50"></textarea><br>
+                    <input type="submit" value="送出留言">
+                </form>
+                <hr>
+
+                <div class="title">
+                    {% for message in message %}
+                    <div>{{ message.name }}：{{ message.content }}</div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            function validateMessageForm() {
+                var content = document.getElementById("content").value;
+                if (content.trim() === "") {
+                    alert("留言內容不能為空");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+    </body>
+
+</html>
