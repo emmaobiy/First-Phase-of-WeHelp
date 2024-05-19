@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">     
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>歡迎光臨</title>
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    </head>
+
+    <body>
+        <div class="welcome">歡迎光臨，這是會員頁</div>
+        <div class="title">{{ name }}，歡迎登入系統</div>
+        <div>
+            <a href="/signout" class="title">登出系統</a>
+        </div>
+
+        <hr>   
+        
+        <div >
+
+            <div class="title">留言版</div> 
+            <div>
+                <form action="/createMessage" method="post" onsubmit="return validateMessageForm()">
+                    <textarea name="content" id="content" rows="4" cols="50"></textarea><br>
+                    <input type="submit" value="送出留言">
+                </form>
+                
+                <div class="title">
+                    {% for message in message %}
+                    <div>{{ message.name }}：{{ message.content }}</div>
+                    {% endfor %}
+                </div>
+                <hr>
+                <div>
+                    <div class="title">查詢會員姓名</div>
+                    <input type="text" id="queryInput">
+                    <button class="Button" onclick="queryMember()">查詢</button>
+
+                    <div id="queryResult" class="title"></div>
+                </div>
+                <hr>
+                <div>
+                    <div class="title">更新我的姓名</div>
+                    <input type="text" id="updateInput">
+                    <button class="Button" onclick="updateName()">更新</button>
+                    <hr>
+                
+                    <div id="updateResult" class="title"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function validateMessageForm() {
+                var content = document.getElementById("content").value;
+                if (content.trim() === "") {
+                    alert("留言內容不能為空");
+                    return false;
+                }
+                return true;
+            }
+
+            function queryMember() {
+                var inputName = document.getElementById("queryInput").value;
+                fetch(`/api/member?username=${inputName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        var resultDiv = document.getElementById("queryResult");
+                        if (data.data) {
+                            resultDiv.innerText = `${data.data.name} (${data.data.username})`;
+                        } else {
+                            resultDiv.innerText = "無此會員";
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+
+
+            function updateName() {
+                var newName = document.getElementById("updateInput").value;
+                fetch("/api/updateName", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ "name": newName })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        var resultDiv = document.getElementById("updateResult");
+                        if (data.success) {
+                            resultDiv.innerText = "更新成功";
+                        } 
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        </script>
+    </body>
+
+</html>
