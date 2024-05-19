@@ -191,7 +191,7 @@ class UpdateNameRequest(BaseModel):
 
 
 # 更新姓名
-@app.patch("/api/updateName", response_class=JSONResponse)
+@app.patch("/api/member", response_class=JSONResponse)
 async def update_name(request: Request, update_data: UpdateNameRequest):
     session = request.session
     if 'username' not in session:

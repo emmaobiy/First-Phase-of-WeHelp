@@ -79,7 +79,7 @@
 
             function updateName() {
                 let newName = document.getElementById("updateInput").value;
-                fetch("/api/updateName", {
+                fetch("/api/member", {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
