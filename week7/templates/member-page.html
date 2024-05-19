@@ -52,7 +52,7 @@
 
         <script>
             function validateMessageForm() {
-                var content = document.getElementById("content").value;
+                let content = document.getElementById("content").value;
                 if (content.trim() === "") {
                     alert("留言內容不能為空");
                     return false;
@@ -61,11 +61,11 @@
             }
 
             function queryMember() {
-                var inputName = document.getElementById("queryInput").value;
+                let inputName = document.getElementById("queryInput").value;
                 fetch(`/api/member?username=${inputName}`)
                     .then(response => response.json())
                     .then(data => {
-                        var resultDiv = document.getElementById("queryResult");
+                        let resultDiv = document.getElementById("queryResult");
                         if (data.data) {
                             resultDiv.innerText = `${data.data.name} (${data.data.username})`;
                         } else {
@@ -78,9 +78,9 @@
 
 
             function updateName() {
-                var newName = document.getElementById("updateInput").value;
+                let newName = document.getElementById("updateInput").value;
                 fetch("/api/updateName", {
-                    method: "POST",
+                    method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -88,7 +88,7 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        var resultDiv = document.getElementById("updateResult");
+                        let resultDiv = document.getElementById("updateResult");
                         if (data.success) {
                             resultDiv.innerText = "更新成功";
                         } 

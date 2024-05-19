@@ -170,7 +170,10 @@ async def create_message(request: Request, content: str = Form(...)):
 
 # 會員查詢
 @app.get("/api/member", response_class=JSONResponse)
-async def query_member(username: str = Query(...)):
+async def query_member(request: Request, username: str = Query(...)):
+    if not checkLogin(request):
+        return JSONResponse(content={"data": None})
+    
     mycursor = mydb.cursor(dictionary=True)
     sql = "SELECT id, name, username FROM member WHERE username = %s"
     val = (username,)
@@ -188,11 +191,11 @@ class UpdateNameRequest(BaseModel):
 
 
 # 更新姓名
-@app.post("/api/updateName", response_class=JSONResponse)
+@app.patch("/api/updateName", response_class=JSONResponse)
 async def update_name(request: Request, update_data: UpdateNameRequest):
     session = request.session
     if 'username' not in session:
-        return JSONResponse(content={"success": False})
+        return JSONResponse(content={"error": True})
     
     username = session['username']
     mycursor = mydb.cursor()
@@ -201,4 +204,7 @@ async def update_name(request: Request, update_data: UpdateNameRequest):
     mycursor.execute(sql, val)
     mydb.commit()
 
-    return JSONResponse(content={"success": True})
+    if mycursor.rowcount > 0:
+        return JSONResponse(content={"ok": True})
+    else:
+        return JSONResponse(content={"error": True})

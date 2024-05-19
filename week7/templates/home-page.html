@@ -29,10 +29,10 @@
         </form>
         <script>
          function validateSignupForm() {
-            var name = document.getElementsByName("name")[0].value;
-            var username = document.getElementsByName("username")[0].value;
-            var password = document.getElementsByName("password")[0].value;
-            var errorMessage = "";
+            let name = document.getElementsByName("name")[0].value;
+            let username = document.getElementsByName("username")[0].value;
+            let password = document.getElementsByName("password")[0].value;
+            let errorMessage = "";
 
             if (name === "") {
                 errorMessage += "請輸入姓名\n";
@@ -51,9 +51,9 @@
             }
 
         function validateSigninForm() {
-            var username = document.getElementsByName("username")[1].value;
-            var password = document.getElementsByName("password")[1].value;
-            var errorMessage = "";
+            let username = document.getElementsByName("username")[1].value;
+            let password = document.getElementsByName("password")[1].value;
+            let errorMessage = "";
             if (username === "") {
                 errorMessage += "請輸入帳號\n";
             }
